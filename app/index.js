@@ -5,7 +5,7 @@ var yeoman = require('yeoman-generator');
 
 
 var BaconPluginGenerator = module.exports = function BaconPluginGenerator(args, options, config) {
-  yeoman.generators.Base.apply(this, arguments);
+  yeoman.generators.NamedBase.apply(this, arguments);
 
   this.on('end', function () {
     this.installDependencies({ skipInstall: options['skip-install'] });
@@ -13,7 +13,13 @@ var BaconPluginGenerator = module.exports = function BaconPluginGenerator(args, 
 
   this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 
-  this.namespace = this._.classify(this.appname);
+  var name = this.name;
+
+  // Strip out bacon- or bacon_ for namespace name
+  if (name.match(/^bacon/i)) {
+    name = name.replace(/^bacon[_-]/i, "");
+  }
+  this.namespace = this._.classify(name);
 };
 
 util.inherits(BaconPluginGenerator, yeoman.generators.Base);
