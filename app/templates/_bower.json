@@ -1,6 +1,12 @@
 {
-  "name": "package",
+  "name": "<%= _.slugify(appname) %>",
   "version": "0.0.0",
+  "main": "dist/<%= _.slugify(appname) %>.js",
+  "ignore": [
+    "src",
+    "test",
+    "Gruntfile.coffee"
+  ],
   "dependencies": {
     "bacon": "latest"
   }

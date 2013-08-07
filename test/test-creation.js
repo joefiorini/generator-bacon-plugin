@@ -3,6 +3,7 @@
 
 var path    = require('path');
 var helpers = require('yeoman-generator').test;
+var assert  = require("assert");
 
 
 describe('bacon-plugin generator', function () {
@@ -22,17 +23,28 @@ describe('bacon-plugin generator', function () {
   it('creates expected files', function (done) {
     var expected = [
       // add files you expect to exist here.
-      '.jshintrc',
-      '.editorconfig'
+      'Gruntfile.coffee',
+      'bower.json',
+      'package.json',
+      'karma.conf.js',
+      'README.md',
+      'tasks/options/clean.coffee',
+      'tasks/options/coffee.coffee',
+      'tasks/options/copy.coffee',
+      'tasks/options/karma.coffee',
+      'tasks/options/release.coffee',
+      'tasks/options/simplemocha.coffee',
+      'tasks/options/transpile.coffee',
+      'tasks/options/uglify.coffee'
     ];
 
-    helpers.mockPrompt(this.app, {
-      'someOption': 'Y'
-    });
     this.app.options['skip-install'] = true;
     this.app.run({}, function () {
+      assert.equal(this.app.namespace, "Temp");
       helpers.assertFiles(expected);
+      helpers.assertFile("src/main.coffee", /export default Bacon.Temp/);
+      helpers.assertFile("tasks/options/release.coffee", /<%= version %>/);
       done();
-    });
+    }.bind(this));
   });
 });

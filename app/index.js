@@ -4,7 +4,7 @@ var path = require('path');
 var yeoman = require('yeoman-generator');
 
 
-var Bacon-pluginGenerator = module.exports = function Bacon-pluginGenerator(args, options, config) {
+var BaconPluginGenerator = module.exports = function BaconPluginGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
 
   this.on('end', function () {
@@ -12,39 +12,36 @@ var Bacon-pluginGenerator = module.exports = function Bacon-pluginGenerator(args
   });
 
   this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+
+  this.namespace = this._.classify(this.appname);
 };
 
-util.inherits(Bacon-pluginGenerator, yeoman.generators.Base);
+util.inherits(BaconPluginGenerator, yeoman.generators.Base);
 
-Bacon-pluginGenerator.prototype.askFor = function askFor() {
-  var cb = this.async();
-
+BaconPluginGenerator.prototype.askFor = function askFor() {
   // have Yeoman greet the user.
   console.log(this.yeoman);
-
-  var prompts = [{
-    type: 'confirm',
-    name: 'someOption',
-    message: 'Would you like to enable this option?',
-    default: true
-  }];
-
-  this.prompt(prompts, function (props) {
-    this.someOption = props.someOption;
-
-    cb();
-  }.bind(this));
 };
 
-Bacon-pluginGenerator.prototype.app = function app() {
-  this.mkdir('app');
-  this.mkdir('app/templates');
-
+BaconPluginGenerator.prototype.app = function app() {
   this.copy('_package.json', 'package.json');
   this.copy('_bower.json', 'bower.json');
+  this.template('src/main.coffee');
+  this.template('README.md');
 };
 
-Bacon-pluginGenerator.prototype.projectfiles = function projectfiles() {
-  this.copy('editorconfig', '.editorconfig');
-  this.copy('jshintrc', '.jshintrc');
+BaconPluginGenerator.prototype.grunt = function gruntfiles() {
+  this.template('Gruntfile.coffee');
+  this.template('tasks/options/clean.coffee');
+  this.template('tasks/options/coffee.coffee');
+  this.template('tasks/options/copy.coffee');
+  this.template('tasks/options/karma.coffee');
+  this.template('tasks/options/release.coffee');
+  this.template('tasks/options/simplemocha.coffee');
+  this.template('tasks/options/transpile.coffee');
+  this.template('tasks/options/uglify.coffee');
+};
+
+BaconPluginGenerator.prototype.testing = function testingfiles() {
+  this.template('karma.conf.js');
 };

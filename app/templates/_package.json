@@ -1,7 +1,25 @@
 {
-  "name": "package",
+  "name": "<%= _.slugify(appname) %>",
   "version": "0.0.0",
   "dependencies": {
     "baconjs": "*"
-  }
+  },
+  "devDependencies": {
+    "coffee-script": "1.4.0",
+    "mocha": "~1.12",
+    "chai": "1.6.0",
+    "grunt": "0.4.1",
+    "grunt-cli": "0.1.5",
+    "grunt-karma": "~0.4.5",
+    "grunt-release": "git://github.com/begriffs/grunt-release.git#bower",
+    "grunt-contrib-coffee": "~0.4.0",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-es6-module-transpiler": "git://github.com/joefiorini/grunt-es6-module-transpiler.git#umd-compiler-support",
+    "grunt-simple-mocha": "~0.4.0",
+    "matchdep": "~0.1.2",
+    "bower": "~1.0.0"
+  },
+  "main": "dist/<%= _.slugify(appname) %>.js"
 }
